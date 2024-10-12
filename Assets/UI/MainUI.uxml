@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/main.uss?fileID=7433441132597879392&amp;guid=44f9b32a92825074eb5bbdaf695417be&amp;type=3#main" />
+    <ui:VisualElement name="Buttons" class="ButtonsPanel">
+        <ui:Button text="Raise terrain" name="ButtonRaise" />
+        <ui:Button text="Lower terrain" name="ButtonLower" />
+    </ui:VisualElement>
+</ui:UXML>

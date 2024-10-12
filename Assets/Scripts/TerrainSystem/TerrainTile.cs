@@ -52,5 +52,24 @@ namespace TerrainSystem
         {
             return (TileCornerDirections)Mathf.RoundToInt(Mathf.Repeat((int)current + direction, 4));
         }
+
+        public void LowerCorner(TileCornerDirections tileCorner)
+        {
+            CornerHeights[tileCorner]--;
+
+            if (Terrain.terrainConfig.LimitCornerDifference == null)
+                return;
+
+            var directionLeft = GetNextDirection(tileCorner, -1);
+            var diffLeft = CornerHeights[directionLeft] - CornerHeights[tileCorner];
+            if (diffLeft > Terrain.terrainConfig.LimitCornerDifference)
+                LowerCorner(directionLeft);
+
+
+            var directionRight = GetNextDirection(tileCorner, 1);
+            var diffRight = CornerHeights[directionRight] - CornerHeights[tileCorner];
+            if (diffRight > Terrain.terrainConfig.LimitCornerDifference)
+                LowerCorner(directionRight);
+        }
     }
 }

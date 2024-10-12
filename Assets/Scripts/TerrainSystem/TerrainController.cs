@@ -21,20 +21,7 @@ namespace TerrainSystem
             UpdateMesh();
         }
 
-        private void OnMouseUpAsButton()
-        {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out var hit))
-            {
-                var tileHit = Terrain.WorldCoordinateToTile(hit.point);
-                //tileHit.tile.CornerHeights[tileHit.closestCorner] ++;
-                tileHit.tile.IncreaseCorner(tileHit.closestCorner);
-
-                UpdateMesh();
-            }
-        }
-
-        private void UpdateMesh()
+        public void UpdateMesh()
         {
             TerrainMeshData.Clear();
 
