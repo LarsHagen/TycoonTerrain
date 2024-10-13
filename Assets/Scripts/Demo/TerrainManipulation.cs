@@ -21,18 +21,18 @@ public class TerrainManipulation : MonoBehaviour
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out var hit))
         {
-            var terrainController = hit.transform.GetComponent<TerrainController>();
+            var terrainController = hit.transform.GetComponentInParent<TerrainController>();
             if (terrainController == null)
                 return;
 
-            var tileHit = terrainController.Terrain.WorldCoordinateToTile(hit.point);
+            var tileHit = terrainController.WorldCoordinateToTile(hit.point);
 
             if (tool == Tool.RaiseTerrain)
                 tileHit.tile.IncreaseCorner(tileHit.closestCorner);
             else
                 tileHit.tile.LowerCorner(tileHit.closestCorner);
 
-            terrainController.UpdateMesh();
+            terrainController.terrainView.UpdateChunkMesh(tileHit.chunk);
         }
     }
 }

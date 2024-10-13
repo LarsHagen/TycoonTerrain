@@ -2,8 +2,11 @@
 {
     public class TerrainConfig
     {
-        public int TerrainSizeX = 40;
-        public int TerrainSizeZ = 40;
+        public int ChunkSizeX = 16;
+        public int ChunkSizeZ = 16;
+
+        public int NumChunksX = 16;
+        public int NumChunksZ = 16;
 
         public float TileSizeX = 2;
         public float TileSizeZ = 2;

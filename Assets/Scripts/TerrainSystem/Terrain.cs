@@ -1,48 +1,21 @@
-﻿using UnityEngine;
-using UnityEngine.TerrainUtils;
+﻿using Assets.Scripts.TerrainSystem;
+using UnityEngine;
 
 namespace TerrainSystem
 {
     public class Terrain
     {
-        public static TerrainConfig terrainConfig = new();
-
-        public TerrainTile[,] Tiles { get; private set; }
-
-        public Terrain()
+        public TerrainChunk[,] Chunks { get; private set; }
+        public Terrain(TerrainConfig config)
         {
-            Tiles = new TerrainTile[terrainConfig.TerrainSizeX, terrainConfig.TerrainSizeZ];
-
-            for (int x = 0; x < terrainConfig.TerrainSizeX; x++)
+            Chunks = new TerrainChunk[config.NumChunksX, config.NumChunksZ];
+            for (int x = 0; x < config.NumChunksX; x++)
             {
-                for (int z = 0; z < terrainConfig.TerrainSizeZ; z++)
+                for (int z = 0; z < config.NumChunksZ; z++)
                 {
-                    Tiles[x, z] = new TerrainTile();
+                    Chunks[x, z] = new(config, x, z);
                 }
             }
-        }
-
-        public (TerrainTile tile, TerrainTile.TileCornerDirections closestCorner) WorldCoordinateToTile(Vector3 worldPosition)
-        {
-            var tileX = (int)(worldPosition.x / terrainConfig.TileSizeX);
-            var tileZ = (int)(worldPosition.z/ terrainConfig.TileSizeZ);
-
-            var tile = Tiles[tileX, tileZ];
-            TerrainTile.TileCornerDirections closestCorner;
-
-            var localX = (worldPosition.x - (tileX * terrainConfig.TileSizeX)) / terrainConfig.TileSizeX;
-            var localZ = (worldPosition.z - (tileZ * terrainConfig.TileSizeZ)) / terrainConfig.TileSizeZ;
-
-            if (localX < 0.5f)
-            {
-                closestCorner = localZ < 0.5f ? TerrainTile.TileCornerDirections.SE : TerrainTile.TileCornerDirections.NE;
-            }
-            else
-            {
-                closestCorner = localZ < 0.5f ? TerrainTile.TileCornerDirections.SW : TerrainTile.TileCornerDirections.NW;
-            }
-
-            return (tile, closestCorner);
         }
     }
 }
