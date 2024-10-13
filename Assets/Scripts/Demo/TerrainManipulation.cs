@@ -1,38 +1,40 @@
-using System;
-using TerrainSystem;
+using TerrainSystem.View;
 using UnityEngine;
 
-public class TerrainManipulation : MonoBehaviour
+namespace Demo
 {
-    [SerializeField] private MainUIController mainUIController;
-    public enum Tool { RaiseTerrain, LowerTerrain}
-    public Tool tool;
-
-    private void Update()
+    public class TerrainManipulation : MonoBehaviour
     {
-        if (Input.GetMouseButtonUp(0))
+        [SerializeField] private MainUIController mainUIController;
+        public enum Tool { RaiseTerrain, LowerTerrain }
+        public Tool tool;
+
+        private void Update()
         {
-            OnMouseClick();
+            if (Input.GetMouseButtonUp(0))
+            {
+                OnMouseClick();
+            }
         }
-    }
 
-    private void OnMouseClick()
-    {
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out var hit))
+        private void OnMouseClick()
         {
-            var terrainController = hit.transform.GetComponentInParent<TerrainController>();
-            if (terrainController == null)
-                return;
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out var hit))
+            {
+                var terrainView = hit.transform.GetComponentInParent<TerrainView>();
+                if (terrainView == null)
+                    return;
 
-            var tileHit = terrainController.WorldCoordinateToTile(hit.point);
+                var tileHit = ServiceLocator.Instance.terrainController.WorldCoordinateToTile(hit.point);
 
-            if (tool == Tool.RaiseTerrain)
-                tileHit.tile.IncreaseCorner(tileHit.closestCorner);
-            else
-                tileHit.tile.LowerCorner(tileHit.closestCorner);
+                if (tool == Tool.RaiseTerrain)
+                    tileHit.tile.IncreaseCorner(tileHit.closestCorner);
+                else
+                    tileHit.tile.LowerCorner(tileHit.closestCorner);
 
-            terrainController.terrainView.UpdateChunkMesh(tileHit.chunk);
+                terrainView.UpdateChunkMesh(tileHit.chunk);
+            }
         }
     }
 }

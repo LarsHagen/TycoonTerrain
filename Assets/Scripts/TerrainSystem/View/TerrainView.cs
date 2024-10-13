@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace TerrainSystem.View
 {
-    public class TerrainView : MonoBehaviour
+    public class TerrainView : MonoBehaviour, ITerrainView
     {
-        public Material TerrainMaterial;
+        [SerializeField] private Material terrainMaterial;
 
         public IReadOnlyDictionary<TerrainChunk, ChunkView> TerrainChunks => _terrainChunks;
-        private Dictionary<TerrainChunk, ChunkView> _terrainChunks = new Dictionary<TerrainChunk,ChunkView>();
+        private Dictionary<TerrainChunk, ChunkView> _terrainChunks = new Dictionary<TerrainChunk, ChunkView>();
+
         private TerrainConfig _terrainConfig;
 
         public void Initialize(TerrainConfig terrainConfig, Terrain terrain)
@@ -34,7 +35,7 @@ namespace TerrainSystem.View
                 chunkView = new GameObject("Chunk (" + chunk.ChunkPositionX + "," + chunk.ChunkPositionZ + ")").AddComponent<ChunkView>();
                 chunkView.transform.SetParent(transform, false);
                 chunkView.transform.localPosition = new Vector3(chunk.ChunkPositionX * _terrainConfig.ChunkSizeX * _terrainConfig.TileSizeX, 0, chunk.ChunkPositionZ * _terrainConfig.ChunkSizeZ * _terrainConfig.TileSizeZ);
-                chunkView.Initialize(chunk, _terrainConfig, TerrainMaterial);
+                chunkView.Initialize(chunk, _terrainConfig, terrainMaterial);
                 _terrainChunks.Add(chunk, chunkView);
             }
 

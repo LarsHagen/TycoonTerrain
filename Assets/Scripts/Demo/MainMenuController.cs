@@ -2,31 +2,34 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MainUIController : MonoBehaviour
+namespace Demo
 {
-    [SerializeField] private TerrainManipulation terrainManipulation;
-
-    public VisualElement root;
-    public Button RaiseTerrainButton;
-    public Button LowerTerrainButton;
-
-    private void Awake()
+    public class MainUIController : MonoBehaviour
     {
-        root = GetComponent<UIDocument>().rootVisualElement;
-        RaiseTerrainButton = root.Q<Button>("ButtonRaise");
-        LowerTerrainButton = root.Q<Button>("ButtonLower");
+        [SerializeField] private TerrainManipulation terrainManipulation;
 
-        RaiseTerrainButton.clicked += ClickedRaiseTerrainButton;
-        LowerTerrainButton.clicked += ClickedLowerTerrainButton;
-    }
+        public VisualElement root;
+        public Button RaiseTerrainButton;
+        public Button LowerTerrainButton;
 
-    private void ClickedLowerTerrainButton()
-    {
-        terrainManipulation.tool = TerrainManipulation.Tool.LowerTerrain;
-    }
+        private void Awake()
+        {
+            root = GetComponent<UIDocument>().rootVisualElement;
+            RaiseTerrainButton = root.Q<Button>("ButtonRaise");
+            LowerTerrainButton = root.Q<Button>("ButtonLower");
 
-    private void ClickedRaiseTerrainButton()
-    {
-        terrainManipulation.tool = TerrainManipulation.Tool.RaiseTerrain;
+            RaiseTerrainButton.clicked += ClickedRaiseTerrainButton;
+            LowerTerrainButton.clicked += ClickedLowerTerrainButton;
+        }
+
+        private void ClickedLowerTerrainButton()
+        {
+            terrainManipulation.tool = TerrainManipulation.Tool.LowerTerrain;
+        }
+
+        private void ClickedRaiseTerrainButton()
+        {
+            terrainManipulation.tool = TerrainManipulation.Tool.RaiseTerrain;
+        }
     }
 }
