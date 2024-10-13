@@ -16,10 +16,10 @@ namespace TerrainSystem
         public TerrainTile(TerrainConfig config)
         {
             CornerHeights = new Dictionary<TileCornerDirections, int>();
-            CornerHeights[TileCornerDirections.SW] = (int)Random.Range(0,1);
-            CornerHeights[TileCornerDirections.NW] = (int)Random.Range(0,1);
-            CornerHeights[TileCornerDirections.NE] = (int)Random.Range(0,1);
-            CornerHeights[TileCornerDirections.SE] = (int)Random.Range(0,1);
+            CornerHeights[TileCornerDirections.SW] = 0;
+            CornerHeights[TileCornerDirections.NW] = 0;
+            CornerHeights[TileCornerDirections.NE] = 0;
+            CornerHeights[TileCornerDirections.SE] = 0;
 
             var surfaceX = Random.Range(2, 6) / 9f;
             var surfaceY = Random.Range(5, 9) / 10f;
@@ -30,6 +30,12 @@ namespace TerrainSystem
             Sides = new Color(sideX, sideY, 0);
 
             _config = config;
+        }
+
+        public void SetCorner(TileCornerDirections tileCorner, int value)
+        {
+            CornerHeights[tileCorner] = value;
+            Debug.LogWarning("TODO: Make sure _config.LimitCornerDifference rule is not broken");
         }
 
         public void IncreaseCorner(TileCornerDirections tileCorner)
