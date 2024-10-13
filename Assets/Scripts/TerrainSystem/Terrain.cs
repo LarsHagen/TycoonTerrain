@@ -9,10 +9,8 @@ namespace TerrainSystem
 
         public TerrainTile[,] Tiles { get; private set; }
 
-        public Terrain(int sizeX, int sizeZ)
+        public Terrain()
         {
-            terrainConfig.TerrainSizeX = sizeX;
-            terrainConfig.TerrainSizeZ = sizeZ;
             Tiles = new TerrainTile[terrainConfig.TerrainSizeX, terrainConfig.TerrainSizeZ];
 
             for (int x = 0; x < terrainConfig.TerrainSizeX; x++)

@@ -15,7 +15,7 @@ namespace TerrainSystem
 
         private void Start()
         {
-            Terrain = new Terrain(SizeX, SizeZ);
+            Terrain = new Terrain();
             TerrainMeshData = new TerrainMeshData();
 
             UpdateMesh();
