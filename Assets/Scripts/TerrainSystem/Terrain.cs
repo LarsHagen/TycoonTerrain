@@ -1,19 +1,16 @@
-﻿using Assets.Scripts.TerrainSystem;
-using UnityEngine;
-
-namespace TerrainSystem
+﻿namespace TerrainSystem
 {
     public class Terrain
     {
-        public TerrainChunk[,] Chunks { get; private set; }
+        public TerrainTile[,] Tiles { get; private set; }
         public Terrain(TerrainConfig config)
         {
-            Chunks = new TerrainChunk[config.NumChunksX, config.NumChunksZ];
-            for (int x = 0; x < config.NumChunksX; x++)
+            Tiles = new TerrainTile[config.NumChunksX * config.ChunkSizeX, config.NumChunksZ * config.ChunkSizeZ];
+            for (int x = 0; x < config.NumChunksX * config.ChunkSizeX; x++)
             {
-                for (int z = 0; z < config.NumChunksZ; z++)
+                for (int z = 0; z < config.NumChunksZ * config.ChunkSizeZ; z++)
                 {
-                    Chunks[x, z] = new(config, x, z);
+                    Tiles[x, z] = new(config, x, z);
                 }
             }
         }

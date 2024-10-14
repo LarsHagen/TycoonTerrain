@@ -1,4 +1,3 @@
-using Assets.Scripts.TerrainSystem;
 using TerrainSystem.View;
 using UnityEngine;
 
@@ -20,19 +19,21 @@ namespace TerrainSystem
             TerrainView.Initialize(config, Terrain);
         }
 
-        public (TerrainChunk chunk, TerrainTile tile, TerrainTile.TileCornerDirections closestCorner) WorldCoordinateToTile(Vector3 worldPosition)
+        public (TerrainTile tile, TerrainTile.TileCornerDirections closestCorner) WorldCoordinateToTile(Vector3 worldPosition)
         {
             var worldTileX = (int)(worldPosition.x / Config.TileSizeX);
             var worldTileZ = (int)(worldPosition.z / Config.TileSizeZ);
 
-            var chunkX = worldTileX / Config.ChunkSizeX;
+            /*var chunkX = worldTileX / Config.ChunkSizeX;
             var chunkZ = worldTileZ / Config.ChunkSizeZ;
 
             var chunkTileX = worldTileX - chunkX * Config.ChunkSizeX;
             var chunkTileZ = worldTileZ - chunkZ * Config.ChunkSizeZ;
 
             var chunk = Terrain.Chunks[chunkX, chunkZ];
-            var tile = chunk.Tiles[chunkTileX, chunkTileZ];
+            var tile = chunk.Tiles[chunkTileX, chunkTileZ];*/
+            var tile = Terrain.Tiles[worldTileX, worldTileZ];
+
 
             var localX = worldPosition.x % Config.TileSizeX;
             var localZ = worldPosition.z % Config.TileSizeZ;
@@ -47,7 +48,7 @@ namespace TerrainSystem
                 closestCorner = localZ < Config.TileSizeZ * 0.5f ? TerrainTile.TileCornerDirections.SW : TerrainTile.TileCornerDirections.NW;
             }
 
-            return (chunk, tile, closestCorner);
+            return (tile, closestCorner);
         }
     }
 }

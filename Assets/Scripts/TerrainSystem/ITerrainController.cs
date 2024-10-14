@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.TerrainSystem;
-using TerrainSystem.View;
+﻿using TerrainSystem.View;
 using UnityEngine;
 
 namespace TerrainSystem
@@ -10,6 +9,6 @@ namespace TerrainSystem
         TerrainConfig Config { get; }
         ITerrainView TerrainView { get; }
 
-        (TerrainChunk chunk, TerrainTile tile, TerrainTile.TileCornerDirections closestCorner) WorldCoordinateToTile(Vector3 worldPosition);
+        (TerrainTile tile, TerrainTile.TileCornerDirections closestCorner) WorldCoordinateToTile(Vector3 worldPosition);
     }
 }

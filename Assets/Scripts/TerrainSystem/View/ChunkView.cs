@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.TerrainSystem;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace TerrainSystem.View
@@ -11,16 +10,20 @@ namespace TerrainSystem.View
     {
         private TerrainMeshData _terrainMeshData;
         private TerrainConfig _config;
-        private TerrainChunk _chunk;
 
         private MeshFilter _filter;
         private MeshRenderer _meshRenderer;
         private MeshCollider _meshCollider;
+        private Terrain _terrain;
+        private int _chunkCoordX;
+        private int _chunkCoordZ;
 
-        internal void Initialize(TerrainChunk chunk, TerrainConfig config, Material terrainMaterial)
+        internal void Initialize(TerrainConfig config, Terrain terrain, int chunkCoordX, int chunkCoordZ, Material terrainMaterial)
         {
+            _terrain = terrain;
+            _chunkCoordX = chunkCoordX;
+            _chunkCoordZ = chunkCoordZ;
             _config = config;
-            _chunk = chunk;
 
             _terrainMeshData = new();
 
@@ -39,7 +42,10 @@ namespace TerrainSystem.View
             {
                 for (int z = 0; z < _config.ChunkSizeZ; z++)
                 {
-                    var tile = _chunk.Tiles[x, z];
+                    var tilePositonX = _chunkCoordX * _config.ChunkSizeX + x;
+                    var tilePositonZ = _chunkCoordZ * _config.ChunkSizeZ + z;
+
+                    var tile = _terrain.Tiles[tilePositonX, tilePositonZ];
 
                     var worldX = x * _config.TileSizeX;
                     var worldZ = z * _config.TileSizeZ;

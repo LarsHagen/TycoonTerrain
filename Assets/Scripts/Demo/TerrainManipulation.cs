@@ -38,7 +38,7 @@ namespace Demo
                 else
                     tileHit.tile.LowerCorner(tileHit.closestCorner);
 
-                terrainView.UpdateChunkMesh(tileHit.chunk);
+                terrainView.OnTileUpdated(tileHit.tile);
             }
         }
 
@@ -48,34 +48,25 @@ namespace Demo
             var noiseFrequency = 0.01f;
             var terrainConfig = ServiceLocator.Instance.terrainConfig;
 
-            for (int chunkX = 0; chunkX < terrainConfig.NumChunksX; chunkX++)
+            var terrain = ServiceLocator.Instance.terrainController.Terrain;
+
+            for (int tileX = 0; tileX < terrainConfig.NumChunksX * terrainConfig.ChunkSizeX; tileX++)
             {
-                for (int chunkZ = 0;chunkZ < terrainConfig.NumChunksZ; chunkZ++)
+                for (int tileZ = 0; tileZ < terrainConfig.NumChunksZ * terrainConfig.ChunkSizeZ; tileZ++)
                 {
-                    var chunk = ServiceLocator.Instance.terrainController.Terrain.Chunks[chunkX, chunkZ];
+                    var heightSE = Mathf.PerlinNoise(tileX * noiseFrequency, tileZ * noiseFrequency) * noiseScale;
+                    var heightNE = Mathf.PerlinNoise(tileX * noiseFrequency, (tileZ + 1) * noiseFrequency) * noiseScale;
+                    var heightNW = Mathf.PerlinNoise((tileX + 1) * noiseFrequency, (tileZ + 1) * noiseFrequency) * noiseScale;
+                    var heightSW = Mathf.PerlinNoise((tileX + 1) * noiseFrequency, tileZ * noiseFrequency) * noiseScale;
 
-                    for (int tileX = 0; tileX < terrainConfig.ChunkSizeX; tileX++)
-                    {
-                        for (int tileZ = 0; tileZ < terrainConfig.ChunkSizeZ; tileZ++)
-                        {
-                            var worldX = (chunkX * terrainConfig.ChunkSizeX + tileX) * terrainConfig.TileSizeX;
-                            var worldZ = (chunkZ * terrainConfig.ChunkSizeZ + tileZ) * terrainConfig.TileSizeZ;
-
-                            var heightSE = Mathf.PerlinNoise(worldX * noiseFrequency, worldZ * noiseFrequency) * noiseScale;
-                            var heightNE = Mathf.PerlinNoise(worldX * noiseFrequency, (worldZ + terrainConfig.TileSizeZ) * noiseFrequency) * noiseScale;
-                            var heightNW = Mathf.PerlinNoise((worldX + terrainConfig.TileSizeX) * noiseFrequency, (worldZ + terrainConfig.TileSizeZ) * noiseFrequency) * noiseScale;
-                            var heightSW = Mathf.PerlinNoise((worldX + terrainConfig.TileSizeX) * noiseFrequency, worldZ * noiseFrequency) * noiseScale;
-
-                            chunk.Tiles[tileX, tileZ].SetCorner(TerrainSystem.TerrainTile.TileCornerDirections.SW, Mathf.RoundToInt(heightSW));
-                            chunk.Tiles[tileX, tileZ].SetCorner(TerrainSystem.TerrainTile.TileCornerDirections.NW, Mathf.RoundToInt(heightNW));
-                            chunk.Tiles[tileX, tileZ].SetCorner(TerrainSystem.TerrainTile.TileCornerDirections.NE, Mathf.RoundToInt(heightNE));
-                            chunk.Tiles[tileX, tileZ].SetCorner(TerrainSystem.TerrainTile.TileCornerDirections.SE, Mathf.RoundToInt(heightSE));
-                        }
-                    }
-
-                    ServiceLocator.Instance.terrainView.UpdateChunkMesh(chunk);
+                    terrain.Tiles[tileX, tileZ].SetCorner(TerrainSystem.TerrainTile.TileCornerDirections.SW, Mathf.RoundToInt(heightSW));
+                    terrain.Tiles[tileX, tileZ].SetCorner(TerrainSystem.TerrainTile.TileCornerDirections.NW, Mathf.RoundToInt(heightNW));
+                    terrain.Tiles[tileX, tileZ].SetCorner(TerrainSystem.TerrainTile.TileCornerDirections.NE, Mathf.RoundToInt(heightNE));
+                    terrain.Tiles[tileX, tileZ].SetCorner(TerrainSystem.TerrainTile.TileCornerDirections.SE, Mathf.RoundToInt(heightSE));
                 }
             }
+
+            ServiceLocator.Instance.terrainView.RedrawEntireMap();
         }
     }
 }

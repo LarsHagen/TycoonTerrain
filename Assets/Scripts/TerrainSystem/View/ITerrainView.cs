@@ -1,13 +1,13 @@
-﻿using Assets.Scripts.TerrainSystem;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TerrainSystem.View
 {
     public interface ITerrainView
     {
-        IReadOnlyDictionary<TerrainChunk, ChunkView> TerrainChunks { get; }
+        IReadOnlyDictionary<(int chunkStartX, int chunkStartZ), ChunkView> TerrainChunks { get; }
 
         void Initialize(TerrainConfig terrainConfig, Terrain terrain);
-        void UpdateChunkMesh(TerrainChunk chunk);
+        void OnTileUpdated(TerrainTile tile);
+        void RedrawEntireMap();
     }
 }

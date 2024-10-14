@@ -5,6 +5,8 @@ namespace TerrainSystem
 {
     public class TerrainTile
     {
+        public int WorldPositionX { get; private set; }
+        public int WorldPositionZ { get; private set; }
         public Color Surface;
         public Color Sides;
         private TerrainConfig _config;
@@ -13,7 +15,7 @@ namespace TerrainSystem
 
         public Dictionary<TileCornerDirections, int> CornerHeights;
 
-        public TerrainTile(TerrainConfig config)
+        public TerrainTile(TerrainConfig config, int worldPositionX, int worldPositionZ)
         {
             CornerHeights = new Dictionary<TileCornerDirections, int>();
             CornerHeights[TileCornerDirections.SW] = 0;
@@ -30,6 +32,8 @@ namespace TerrainSystem
             Sides = new Color(sideX, sideY, 0);
 
             _config = config;
+            WorldPositionX = worldPositionX;
+            WorldPositionZ = worldPositionZ;
         }
 
         public void SetCorner(TileCornerDirections tileCorner, int value)
