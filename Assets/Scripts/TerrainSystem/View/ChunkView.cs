@@ -55,10 +55,15 @@ namespace TerrainSystem.View
                     var posNWBase = new Vector3(worldX + _config.TileSizeX, 0, worldZ + _config.TileSizeZ);
                     var posSWBase = new Vector3(worldX + _config.TileSizeX, 0, worldZ);
 
-                    var posSE = new Vector3(posSEBase.x, tile.CornerHeights[TerrainTile.TileCornerDirections.SE] * _config.TileStepSize, posSEBase.z);
-                    var posNE = new Vector3(posNEBase.x, tile.CornerHeights[TerrainTile.TileCornerDirections.NE] * _config.TileStepSize, posNEBase.z);
-                    var posNW = new Vector3(posNWBase.x, tile.CornerHeights[TerrainTile.TileCornerDirections.NW] * _config.TileStepSize, posNWBase.z);
-                    var posSW = new Vector3(posSWBase.x, tile.CornerHeights[TerrainTile.TileCornerDirections.SW] * _config.TileStepSize, posSWBase.z);
+                    var levelSE = tile.CornerHeights[TerrainTile.TileCornerDirections.SE];
+                    var levelNE = tile.CornerHeights[TerrainTile.TileCornerDirections.NE];
+                    var levelNW = tile.CornerHeights[TerrainTile.TileCornerDirections.NW];
+                    var levelSW = tile.CornerHeights[TerrainTile.TileCornerDirections.SW];
+
+                    var posSE = new Vector3(posSEBase.x, levelSE * _config.TileStepSize, posSEBase.z);
+                    var posNE = new Vector3(posNEBase.x, levelNE * _config.TileStepSize, posNEBase.z);
+                    var posNW = new Vector3(posNWBase.x, levelNW * _config.TileStepSize, posNWBase.z);
+                    var posSW = new Vector3(posSWBase.x, levelSW * _config.TileStepSize, posSWBase.z);
 
                     //Add 4 sides
                     _terrainMeshData.AddQuad(posSE, posSW, posSWBase, posSEBase, tile.Sides, tile.Sides, tile.Sides, tile.Sides);
@@ -67,18 +72,19 @@ namespace TerrainSystem.View
                     _terrainMeshData.AddQuad(posSW, posNW, posNWBase, posSWBase, tile.Sides, tile.Sides, tile.Sides, tile.Sides);
 
                     //Add top face, make sure it has the correct "fold" depending on what corner is heighest
-                    if (posSE.y > posNE.y &&
-                        posSE.y > posSW.y)
+                    if ((levelSE > levelNE && levelSE > levelSW) ||
+                        (levelNW > levelNE && levelNW > levelSW) ||
+                        (levelSE == levelNE && levelSE == levelSW) ||
+                        (levelNW == levelNE && levelNW == levelSW))
                     {
                         _terrainMeshData.AddQuad(posSW, posSE, posNE, posNW, tile.Surface, tile.Surface, tile.Surface, tile.Surface);
                         continue;
                     }
-                    if (posNW.y > posNE.y &&
-                        posNW.y > posSW.y)
+                    /*if (levelNW > levelNE && levelNW > levelSW)
                     {
                         _terrainMeshData.AddQuad(posSW, posSE, posNE, posNW, tile.Surface, tile.Surface, tile.Surface, tile.Surface);
                         continue;
-                    }
+                    }*/
                     _terrainMeshData.AddQuad(posSE, posNE, posNW, posSW, tile.Surface, tile.Surface, tile.Surface, tile.Surface);
                 }
             }
