@@ -6,7 +6,9 @@ namespace Demo
     public class TerrainManipulation : MonoBehaviour
     {
         [SerializeField] private MainUIController mainUIController;
-        public enum Tool { RaiseTerrain, LowerTerrain }
+        public enum Tool { RaiseTerrain, LowerTerrain,
+            Paint
+        }
         public Tool tool;
 
         private void Start()
@@ -34,9 +36,18 @@ namespace Demo
                 var tileHit = ServiceLocator.Instance.terrainController.WorldCoordinateToTile(hit.point);
 
                 if (tool == Tool.RaiseTerrain)
+                {
                     tileHit.tile.IncreaseCorner(tileHit.closestCorner);
-                else
+                }
+                else if (tool == Tool.LowerTerrain)
+                {
                     tileHit.tile.LowerCorner(tileHit.closestCorner);
+                }
+                else
+                {
+                    tileHit.tile.SetSurfaceMaterial(mainUIController.IntegerFieldSurfaceX.value, mainUIController.IntegerFieldSurfaceY.value);
+                    tileHit.tile.SetSidesMaterial(mainUIController.IntegerFieldSidesX.value, mainUIController.IntegerFieldSidesY.value);
+                }
 
                 terrainView.OnTileUpdated(tileHit.tile);
             }

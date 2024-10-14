@@ -3,5 +3,18 @@
     <ui:VisualElement name="Buttons" class="ButtonsPanel">
         <ui:Button text="Raise terrain" name="ButtonRaise" />
         <ui:Button text="Lower terrain" name="ButtonLower" />
+        <ui:VisualElement name="TerrainPaint">
+            <ui:Button text="Paint" name="Paint" />
+            <ui:VisualElement name="SurfaceMaterialCoordinates" class="MaterialsCoordinates">
+                <ui:Label text="Surface:" />
+                <ui:IntegerField name="SurfaceMaterialX" value="5" />
+                <ui:IntegerField name="SurfaceMaterialY" value="8"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="SidesMaterialCoordinates" class="MaterialsCoordinates">
+                <ui:Label text="Sides:" />
+                <ui:IntegerField name="SidesMaterialX" value="3"/>
+                <ui:IntegerField name="SidesMaterialY" value="0"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

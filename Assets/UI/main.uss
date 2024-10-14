@@ -2,3 +2,11 @@
     flex-grow: 1;
     width: 200px;
 }
+
+.ButtonSelected {
+    color: green;
+}
+
+.MaterialsCoordinates {
+    flex-direction: row;
+}

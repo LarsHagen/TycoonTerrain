@@ -7,8 +7,8 @@ namespace TerrainSystem
     {
         public int WorldPositionX { get; private set; }
         public int WorldPositionZ { get; private set; }
-        public Color Surface;
-        public Color Sides;
+        public Color Surface { get; private set; }
+        public Color Sides { get; private set; }
         private TerrainConfig _config;
 
         public enum TileCornerDirections { SW, NW, NE, SE}
@@ -23,17 +23,27 @@ namespace TerrainSystem
             CornerHeights[TileCornerDirections.NE] = 0;
             CornerHeights[TileCornerDirections.SE] = 0;
 
-            var surfaceX = Random.Range(2, 6) / 9f;
-            var surfaceY = Random.Range(5, 9) / 10f;
-            Surface = new Color(surfaceX, surfaceY, 0);
-
-            var sideX = Random.Range(2, 6) / 9f;
-            var sideY = Random.Range(5, 9) / 10f;
-            Sides = new Color(sideX, sideY, 0);
+            Surface = TextureAtlasCoordinateToVertexColor(5, 8);
+            Sides = TextureAtlasCoordinateToVertexColor(3, 0);
 
             _config = config;
             WorldPositionX = worldPositionX;
             WorldPositionZ = worldPositionZ;
+        }
+
+        public void SetSurfaceMaterial(int textureAtlasX, int textureAtlasY)
+        {
+            Surface = TextureAtlasCoordinateToVertexColor(textureAtlasX, textureAtlasY);
+        }
+
+        public void SetSidesMaterial(int textureAtlasX, int textureAtlasY)
+        {
+            Sides = TextureAtlasCoordinateToVertexColor(textureAtlasX, textureAtlasY);
+        }
+
+        private Color TextureAtlasCoordinateToVertexColor(int textureAtlasX, int textureAtlasY)
+        {
+            return new Color(textureAtlasX / 9f, textureAtlasY / 10f, 0);
         }
 
         public void SetCorner(TileCornerDirections tileCorner, int value)

@@ -24,14 +24,6 @@ namespace TerrainSystem
             var worldTileX = (int)(worldPosition.x / Config.TileSizeX);
             var worldTileZ = (int)(worldPosition.z / Config.TileSizeZ);
 
-            /*var chunkX = worldTileX / Config.ChunkSizeX;
-            var chunkZ = worldTileZ / Config.ChunkSizeZ;
-
-            var chunkTileX = worldTileX - chunkX * Config.ChunkSizeX;
-            var chunkTileZ = worldTileZ - chunkZ * Config.ChunkSizeZ;
-
-            var chunk = Terrain.Chunks[chunkX, chunkZ];
-            var tile = chunk.Tiles[chunkTileX, chunkTileZ];*/
             var tile = Terrain.Tiles[worldTileX, worldTileZ];
 
 
